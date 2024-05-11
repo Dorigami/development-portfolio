@@ -49,6 +49,19 @@ class Tile {
   }
 
   rotate(num) {
+    const canvasTemp = document.createElement('canvas');
+    const ctxTemp = canvasTemp.getContext('2d');
+    canvasTemp.id = "temp_canvas";
+    console.log(_img.width);
+    canvasTemp.width = _img.width;
+    canvasTemp.height = _img.height;
+    ctxTemp.drawImage(_img,0,0);
+    ctxTemp.rotate(i*Math.PI/2);
+    console.log(_img);
+    console.log(canvasTemp.toDataURL());
+    _img.src = canvasTemp.toDataURL();
+
+
     const w = this.img.width;
     const h = this.img.height;
     const newImg = createGraphics(w, h);

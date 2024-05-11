@@ -14,22 +14,9 @@ ctx.fillRect(200,200,440,320);
 function preload() {
   const path = './assets/tiles/circuit-coding-train';
   for (let i = 0; i < 13; i++) {
-    const canvasTemp = document.createElement('canvas');
-    const ctxTemp = canvasTemp.getContext('2d');
-    canvasTemp.id = "temp_canvas"
-    
     var _img = new Image();
     _img.onload = imageLoaded;
-    _img.src = `${path}/${4}.png`;
-    canvasTemp.width = _img.width;
-    canvasTemp.height = _img.height;
-    //canvas.setAttribute('width', _img.width);
-    //canvas.setAttribute('height', _img.height);
-    ctxTemp.drawImage(_img,0,0)
-    ctxTemp.rotate(i*Math.PI/2)
-    console.log(_img);
-    console.log(canvasTemp.toDataURL());
-    _img.src = canvasTemp.toDataURL();
+    _img.src = `${path}/${i}.png`;
     tileImages[i] = _img;
   }
 }
