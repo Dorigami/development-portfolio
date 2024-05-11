@@ -49,32 +49,23 @@ class Tile {
   }
 
   rotate(num) {
-    const canvasTemp = document.createElement('canvas');
-    const ctxTemp = canvasTemp.getContext('2d');
-    canvasTemp.id = "temp_canvas";
-    console.log(_img.width);
-    canvasTemp.width = _img.width;
-    canvasTemp.height = _img.height;
-    ctxTemp.drawImage(_img,0,0);
-    ctxTemp.rotate(i*Math.PI/2);
-    console.log(_img);
-    console.log(canvasTemp.toDataURL());
-    _img.src = canvasTemp.toDataURL();
-
-
     const w = this.img.width;
     const h = this.img.height;
-    const newImg = createGraphics(w, h);
-    newImg.imageMode(CENTER);
-    newImg.translate(w / 2, h / 2);
-    newImg.rotate(HALF_PI * num);
-    newImg.image(this.img, 0, 0);
+    const canvasTemp = document.createElement('canvas');
+    const ctxTemp = canvasTemp.getContext('2d');
+    let _img = new Image(w, h);
+    canvasTemp.id = "temp_canvas";
+    canvasTemp.width = w;
+    canvasTemp.height = h;
+    ctxTemp.drawImage(this.img,0,0);
+    ctxTemp.rotate(num*Math.PI/2);
+    _img.src = canvasTemp.toDataURL();
 
     const newEdges = [];
     const len = this.edges.length;
     for (let i = 0; i < len; i++) {
       newEdges[i] = this.edges[(i - num + len) % len];
     }
-    return new Tile(newImg, newEdges, this.index);
+    return new Tile(_img, newEdges, this.index);
   }
 }
