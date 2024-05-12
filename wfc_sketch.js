@@ -202,22 +202,30 @@ function draw(){
   for (let j = 0; j < DIM; j++) {
     for (let i = 0; i < DIM; i++) {
       let cell = grid[i + j * DIM];
+      console.log("["+i+", "+j+"] = " + cell.options)
       if (cell.collapsed) {
         let index = cell.options[0];
         ctx.drawImage(tiles[index].img, i*w + i, j*h + j, w, h);
       } else {
-        ctx.fillStyle = "#58A8F8";
+        ctx.fillStyle = `rgb(
+          ${Math.floor(255 - 10 * i)}
+          ${Math.floor(255 - 10 * j)}
+          0)`;
         ctx.fillRect(i*w + i, j*h + j, w, h);
       }
     }
   }
 
   /*
-  // show the source tiles
+  // show the source tile images
   for(let i=0;i<tileImages.length;i++){
     ctx.drawImage(tileImages[i],0,i*DIM+i,DIM,DIM)
   }
   */
+  // show the images assigned to tiles
+  for(let i=0;i<tiles.length;i++){
+    ctx.drawImage(tiles[i].img,0,i*DIM+i,DIM,DIM)
+  }
 }
 
 // START THE WFC ALGORITHM
