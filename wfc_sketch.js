@@ -4,32 +4,69 @@ const DIM = 20;
 let grid = [];
 let tiles = [];
 let imagesLoaded = 0;
+let tilesHaveLoaded = 0;
 // create the canvas
 const canvas = document.getElementById('wfc_canvas'); 
 const ctx = canvas.getContext("2d"); 
 
-function preload() {
+function preloadImages() {
   const path = './assets/tiles/circuit-coding-train';
   for (let i = 0; i < 13; i++) {
-    var _img = new Image();
-    _img.onload = imageLoaded;
-    _img.src = `${path}/${i}.png`;
-    tileImages[i] = _img;
+      var _img = new Image();
+      _img.onload = imageLoaded;
+      _img.src = `${path}/${i}.png`;
+      tileImages[i] = _img;
   }
 }
+function preloadTiles(){
+  // Loaded and created the tiles
+  tiles[0] = new Tile(tileImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
+  tiles[1] = new Tile(tileImages[1], ['BBB', 'BBB', 'BBB', 'BBB']);
+  tiles[2] = new Tile(tileImages[2], ['BBB', 'BCB', 'BBB', 'BBB']);
+  tiles[3] = new Tile(tileImages[3], ['BBB', 'BDB', 'BBB', 'BDB']);
+  tiles[4] = new Tile(tileImages[4], ['ABB', 'BCB', 'BBA', 'AAA']);
+  tiles[5] = new Tile(tileImages[5], ['ABB', 'BBB', 'BBB', 'BBA']);
+  tiles[6] = new Tile(tileImages[6], ['BBB', 'BCB', 'BBB', 'BCB']);
+  tiles[7] = new Tile(tileImages[7], ['BDB', 'BCB', 'BDB', 'BCB']);
+  tiles[8] = new Tile(tileImages[8], ['BDB', 'BBB', 'BCB', 'BBB']);
+  tiles[9] = new Tile(tileImages[9], ['BCB', 'BCB', 'BBB', 'BCB']);
+  tiles[10] = new Tile(tileImages[10], ['BCB', 'BCB', 'BCB', 'BCB']);
+  tiles[11] = new Tile(tileImages[11], ['BCB', 'BCB', 'BBB', 'BBB']);
+  tiles[12] = new Tile(tileImages[12], ['BBB', 'BCB', 'BBB', 'BCB']);
 
-// once all images are loaded, the algorithm will begin
+  for (let i = 0; i < tiles.length; i++) {
+    tiles[i].index = i;
+  }
+  console.log("before: " + tiles.length);
+  const initialTileCount = tiles.length;
+  for (let i = 0; i < initialTileCount; i++) {
+    let tempTiles = [];
+    for (let j = 0; j < 4; j++) {
+      tempTiles.push(tiles[i].rotate(j));
+    }
+    tempTiles = removeDuplicatedTiles(tempTiles);
+    tiles = tiles.concat(tempTiles);
+  }
+  console.log("after: " + tiles.length);
+}
+
+// once all images are loaded, the algorithm will move to next step (generating the tiles)
 function imageLoaded(){
-  if(++imagesLoaded >= tiles.length){ 
-    // create the data structures
-    setup();
-    // run algorithm to set tile images
-    wfc_algorithm();
-    // place tiles onto the canvas
-    draw(); 
+  if(++imagesLoaded >= (tileImages.length)){ 
+    preloadTiles();
   }
 }
-
+function tileLoaded(){
+  tilesHaveLoaded++;
+  if(tilesHaveLoaded >= 52)
+  {
+    setup();
+    // run algorithm after tiles load in
+    wfc_algorithm();
+    // place tiles onto the canvas after all cells are collapsed
+    draw();
+  }
+}
 function removeDuplicatedTiles(tiles) {
   const uniqueTilesMap = {};
   for (const tile of tiles) {
@@ -69,42 +106,11 @@ function mousePressed() {
 }
 
 function setup() {
-  // Loaded and created the tiles
-  tiles[0] = new Tile(tileImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
-  tiles[1] = new Tile(tileImages[1], ['BBB', 'BBB', 'BBB', 'BBB']);
-  tiles[2] = new Tile(tileImages[2], ['BBB', 'BCB', 'BBB', 'BBB']);
-  tiles[3] = new Tile(tileImages[3], ['BBB', 'BDB', 'BBB', 'BDB']);
-  tiles[4] = new Tile(tileImages[4], ['ABB', 'BCB', 'BBA', 'AAA']);
-  tiles[5] = new Tile(tileImages[5], ['ABB', 'BBB', 'BBB', 'BBA']);
-  tiles[6] = new Tile(tileImages[6], ['BBB', 'BCB', 'BBB', 'BCB']);
-  tiles[7] = new Tile(tileImages[7], ['BDB', 'BCB', 'BDB', 'BCB']);
-  tiles[8] = new Tile(tileImages[8], ['BDB', 'BBB', 'BCB', 'BBB']);
-  tiles[9] = new Tile(tileImages[9], ['BCB', 'BCB', 'BBB', 'BCB']);
-  tiles[10] = new Tile(tileImages[10], ['BCB', 'BCB', 'BCB', 'BCB']);
-  tiles[11] = new Tile(tileImages[11], ['BCB', 'BCB', 'BBB', 'BBB']);
-  tiles[12] = new Tile(tileImages[12], ['BBB', 'BCB', 'BBB', 'BCB']);
-
-  for (let i = 0; i < tiles.length; i++) {
-    tiles[i].index = i;
-  }
-  console.log("before: " + tiles.length);
-  const initialTileCount = tiles.length;
-  for (let i = 0; i < initialTileCount; i++) {
-    let tempTiles = [];
-    for (let j = 0; j < 4; j++) {
-      tempTiles.push(tiles[i].rotate(j));
-    }
-    tempTiles = removeDuplicatedTiles(tempTiles);
-    tiles = tiles.concat(tempTiles);
-  }
-  console.log("after: " + tiles.length);
-
   // Generate the adjacency rules based on edges
   for (let i = 0; i < tiles.length; i++) {
     const tile = tiles[i];
     tile.analyze(tiles);
   }
-
   startOver();
 }
 function wfc_algorithm(){
@@ -194,6 +200,7 @@ function wfc_algorithm(){
     }
   }
   grid = nextGrid;
+  wfc_algorithm();
 }
 
 function draw(){
@@ -202,34 +209,36 @@ function draw(){
   for (let j = 0; j < DIM; j++) {
     for (let i = 0; i < DIM; i++) {
       let cell = grid[i + j * DIM];
-      console.log("["+i+", "+j+"] = " + cell.options)
+      // console.log("["+i+", "+j+"] = " + cell.options)
       if (cell.collapsed) {
         let index = cell.options[0];
         ctx.drawImage(tiles[index].img, i*w + i, j*h + j, w, h);
       } else {
-        ctx.fillStyle = `rgb(
-          ${Math.floor(255 - 10 * i)}
-          ${Math.floor(255 - 10 * j)}
-          0)`;
-        ctx.fillRect(i*w + i, j*h + j, w, h);
+        ctx.fillStyle = 'rgb(40,40,40)';
+        ctx.fillRect(i*w+i,j*h+j,w,h)
+        /*
+        let randIndex = Math.floor(Math.random()*tiles.length);
+        ctx.drawImage(tiles[randIndex].img, i*w+i, j*h+j, w, h);
+        */
       }
     }
   }
-
   /*
   // show the source tile images
   for(let i=0;i<tileImages.length;i++){
     ctx.drawImage(tileImages[i],0,i*DIM+i,DIM,DIM)
   }
   */
+ /*
   // show the images assigned to tiles
   for(let i=0;i<tiles.length;i++){
     ctx.drawImage(tiles[i].img,0,i*DIM+i,DIM,DIM)
   }
+  */
 }
 
 // START THE WFC ALGORITHM
-preload();
+preloadImages();
 
 /*
 let tiles = [];

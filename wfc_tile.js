@@ -10,6 +10,11 @@ function compareEdge(a, b) {
 
 class Tile {
   constructor(img, edges, i) {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    this.ctx = canvas.getContext('2d');
+    this.ctx.drawImage(img,0,0);
     this.img = img;
     this.edges = edges;
     this.up = [];
@@ -51,21 +56,30 @@ class Tile {
   rotate(num) {
     const w = this.img.width;
     const h = this.img.height;
-    const canvasTemp = document.createElement('canvas');
-    const ctxTemp = canvasTemp.getContext('2d');
-    let _img = new Image(w, h);
-    canvasTemp.id = "temp_canvas";
-    canvasTemp.width = w;
-    canvasTemp.height = h;
-    ctxTemp.drawImage(this.img,0,0);
-    ctxTemp.rotate(num*Math.PI/2);
-    _img.src = canvasTemp.toDataURL();
+    const cv = document.createElement('canvas');
+    cv.id     = "tile-cv-${this.index}";
+
+    cv.width  = w;
+    cv.height = h;
+    //cv.style.position = "absolute";
+
+    //const body = document.getElementsByTagName("body")[0];
+    //body.appendChild(cv);
+    const ctx = cv.getContext('2d');
+    ctx.translate(w/2,h/2);
+    ctx.rotate(num*Math.PI/2);
+    ctx.translate(-w/2,-h/2);
+    ctx.drawImage(this.img,0,0);
+
+    const newImage = new Image();
+    newImage.src = cv.toDataURL();
+    newImage.onload = tileLoaded;
 
     const newEdges = [];
     const len = this.edges.length;
     for (let i = 0; i < len; i++) {
       newEdges[i] = this.edges[(i - num + len) % len];
     }
-    return new Tile(_img, newEdges, this.index);
+    return new Tile(newImage, newEdges, this.index);
   }
 }
