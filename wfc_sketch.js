@@ -245,7 +245,7 @@ function draw(){
  // print tile key
  let string = "";
  for(let i=0;i<tiles.length;i++){
-  console.log("#"+tiles[i].index + " | edges: " + tiles[i].edges);
+  console.log("#"+ i + " | edges: " + tiles[i].edges);
 }
  // print tile data to console
  for(let j=0;j<DIM;j++){
