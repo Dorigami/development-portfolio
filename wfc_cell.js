@@ -1,6 +1,20 @@
 class Cell {
-  constructor(value) {
+  constructor(value, ind) {
     this.collapsed = false;
+    this.index = ind;
+    // get index values for each neighbor
+    this.neighbors = [
+      ind-DIM >= 0 ? ind-DIM : -1, // up neighbor cell
+      Math.floor(ind/DIM) == Math.floor((ind+1)/DIM) ? ind+1 : -1, // right neighbor cell
+      ind+DIM < DIM*DIM ? ind+DIM : -1, // down neighbor cell
+      Math.floor(ind/DIM) == Math.floor((ind-1)/DIM) ? ind-1 : -1, // left neighbor cell
+    ];
+    this.neighborObjects = [
+      this.neighbors[0] == -1 ? -1 : grid[this.neighbors[0]],
+      this.neighbors[1] == -1 ? -1 : grid[this.neighbors[1]],
+      this.neighbors[2] == -1 ? -1 : grid[this.neighbors[2]],
+      this.neighbors[3] == -1 ? -1 : grid[this.neighbors[3]]
+    ];
     if (value instanceof Array) {
       this.options = value;
     } else {
@@ -9,5 +23,16 @@ class Cell {
         this.options[i] = i;
       }
     }
+  }
+  collapse(ind) {
+    // reduce options down to one
+    this.collapsed = this.options.length <= 1;
+    if(!this.collapsed){
+      let chosenTile = ind == undefined ? Math.floor(Math.random()*this.options.length) : ind;
+      this.options = [this.options[chosenTile]];
+      this.collapsed = true;
+    }
+    // returns false when the collapse is a failure
+    return this.options[0] != undefined
   }
 }
