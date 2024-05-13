@@ -114,6 +114,13 @@ function setup() {
   startOver();
 }
 function wfc_algorithm(){
+
+  // create a list to contain checked nodes
+  // create list to contain candidate nodes
+  // have an array of seed tiles (predetermined, collapsed tiles)
+  // get neighbor cells to the seed nodes, add seed nodes to the checked list, and add neighbors to the candidate list
+
+
   // Pick cell with least entropy
   let gridCopy = grid.slice();
   gridCopy = gridCopy.filter((a) => !a.collapsed);
@@ -126,6 +133,7 @@ function wfc_algorithm(){
     return a.options.length - b.options.length;
   });
 
+  
   let len = gridCopy[0].options.length;
   let stopIndex = 0;
   for (let i = 1; i < gridCopy.length; i++) {
