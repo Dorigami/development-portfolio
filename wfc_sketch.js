@@ -1,6 +1,6 @@
 // vars for WFC
 const tileImages = [];
-const DIM = 5;
+const DIM = 8;
 let grid = [];
 let tiles = [];
 let imagesLoaded = 0;
@@ -91,6 +91,7 @@ function startOver() {
   for(let i=0; i <= Math.floor(Math.random()*5); i++){
     let randInd = Math.floor(Math.random()*grid.length);
     grid[randInd].collapse();
+    updateOptions();
   }
 }
 
@@ -102,7 +103,59 @@ function checkValid(arr, valid) {
     }
   }
 }
+function updateOptions(){
+  for (let j = 0; j < DIM; j++) {
+    for (let i = 0; i < DIM; i++) {
+      let index = i + j * DIM;
+      if (grid[index].collapsed) continue;
 
+      // create an array containing all options, then remove invalid ones
+      let remainingOptions = new Array(tiles.length).fill(0).map((x, i) => i);
+      // Look up
+      if (j > 0) {
+        let up = grid[i + (j - 1) * DIM];
+        let validOptions = [];
+        for (let option of up.options) {
+          let valid = tiles[option].down;
+          validOptions = validOptions.concat(valid);
+        }
+        checkValid(remainingOptions, validOptions);
+      }
+      // Look right
+      if (i < DIM - 1) {
+        let right = grid[i + 1 + j * DIM];
+        let validOptions = [];
+        for (let option of right.options) {
+          let valid = tiles[option].left;
+          validOptions = validOptions.concat(valid);
+        }
+        checkValid(remainingOptions, validOptions);
+      }
+      // Look down
+      if (j < DIM - 1) {
+        let down = grid[i + (j + 1) * DIM];
+        let validOptions = [];
+        for (let option of down.options) {
+          let valid = tiles[option].up;
+          validOptions = validOptions.concat(valid);
+        }
+        checkValid(remainingOptions, validOptions);
+      }
+      // Look left
+      if (i > 0) {
+        let left = grid[i - 1 + j * DIM];
+        let validOptions = [];
+        for (let option of left.options) {
+          let valid = tiles[option].right;
+          validOptions = validOptions.concat(valid);
+        }
+        checkValid(remainingOptions, validOptions);
+      }
+      // give new options to the cell
+      grid[index].options = remainingOptions
+    }
+  }
+}
 function mousePressed() {
   startOver();
   grid = wfc_algorithm(grid.slice());
@@ -144,7 +197,7 @@ function wfc_algorithm(myGrid){
   let stopIndex = 0;
   for (let i = 1; i < candidateCells.length; i++) {
     if (candidateCells[i].options.length > len) {
-      stopIndex = i;
+      stopIndex = i-1;
       break;
     }
   }
@@ -157,57 +210,7 @@ function wfc_algorithm(myGrid){
     myGrid = grid.slice();
   } else {
     //recalulate options for all currently, non-collapsed cells
-    for (let j = 0; j < DIM; j++) {
-      for (let i = 0; i < DIM; i++) {
-        let index = i + j * DIM;
-        if (grid[index].collapsed) continue;
-
-        // create an array containing all options, then remove invalid ones
-        let remainingOptions = new Array(tiles.length).fill(0).map((x, i) => i);
-        // Look up
-        if (j > 0) {
-          let up = grid[i + (j - 1) * DIM];
-          let validOptions = [];
-          for (let option of up.options) {
-            let valid = tiles[option].down;
-            validOptions = validOptions.concat(valid);
-          }
-          checkValid(remainingOptions, validOptions);
-        }
-        // Look right
-        if (i < DIM - 1) {
-          let right = grid[i + 1 + j * DIM];
-          let validOptions = [];
-          for (let option of right.options) {
-            let valid = tiles[option].left;
-            validOptions = validOptions.concat(valid);
-          }
-          checkValid(remainingOptions, validOptions);
-        }
-        // Look down
-        if (j < DIM - 1) {
-          let down = grid[i + (j + 1) * DIM];
-          let validOptions = [];
-          for (let option of down.options) {
-            let valid = tiles[option].up;
-            validOptions = validOptions.concat(valid);
-          }
-          checkValid(remainingOptions, validOptions);
-        }
-        // Look left
-        if (i > 0) {
-          let left = grid[i - 1 + j * DIM];
-          let validOptions = [];
-          for (let option of left.options) {
-            let valid = tiles[option].right;
-            validOptions = validOptions.concat(valid);
-          }
-          checkValid(remainingOptions, validOptions);
-        }
-        // give new options to the cell
-        grid[index].options = remainingOptions
-      }
-    }
+    updateOptions();
   }
   // run algorithm on the grid again with current changes
   return wfc_algorithm(myGrid); 
@@ -230,31 +233,6 @@ function draw(){
       }
     }
   }
-  /*
-  // show the source tile images
-  for(let i=0;i<tileImages.length;i++){
-    ctx.drawImage(tileImages[i],0,i*DIM+i,DIM,DIM)
-  }
-  */
- /*
-  // show the images assigned to tiles
-  for(let i=0;i<tiles.length;i++){
-    ctx.drawImage(tiles[i].img,0,i*DIM+i,DIM,DIM)
-  }
-  */
- // print tile key
- let string = "";
- for(let i=0;i<tiles.length;i++){
-  console.log("#"+ i + " | edges: " + tiles[i].edges);
-}
- // print tile data to console
- for(let j=0;j<DIM;j++){
-    string = "";
-    for(let i=0;i<DIM;i++){
-      string += " I="+grid[i+j*DIM].index+"|T="+grid[i+j*DIM].options[0]+" ";
-    }
-    console.log(string);
- }
 }
 
 // START THE WFC ALGORITHM

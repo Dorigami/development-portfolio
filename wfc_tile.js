@@ -5,7 +5,7 @@ function reverseString(s) {
 }
 
 function compareEdge(a, b) {
-  return a == reverseString(b);
+  return a === reverseString(b);
 }
 
 class Tile {
@@ -63,9 +63,6 @@ class Tile {
     ctx.rotate(num*Math.PI/2);
     ctx.translate(-w/2,-h/2);
     ctx.drawImage(this.img,0,0);
-
-    const body = document.querySelector('body');
-    body.appendChild(cv);
 
     const newImage = new Image();
     newImage.src = cv.toDataURL();
