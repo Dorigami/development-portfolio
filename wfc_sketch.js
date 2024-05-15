@@ -8,6 +8,14 @@ let tilesHaveLoaded = 0;
 // create the canvas
 const canvas = document.getElementById('wfc_canvas'); 
 const ctx = canvas.getContext("2d"); 
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  draw(canvas)
+})
 
 function preloadImages() {
   const path = './assets/tiles/circuit-coding-train';
@@ -18,6 +26,7 @@ function preloadImages() {
       tileImages[i] = _img;
   }
 }
+
 function preloadTiles(){
   // Loaded and created the tiles
   tiles[0] = new Tile(tileImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
