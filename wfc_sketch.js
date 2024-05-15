@@ -1,6 +1,10 @@
 // vars for WFC
+
 const tileImages = [];
 const DIM = 8;
+let tileSize = 0;
+let wfcRowCount = 12;
+let wfcRowCurrent = 0;
 let grid = [];
 let tiles = [];
 let imagesLoaded = 0;
@@ -16,6 +20,15 @@ window.addEventListener('resize', () => {
   canvas.height = window.innerHeight
   draw(canvas)
 })
+
+document.addEventListener("scroll", (event) => {
+  let indexCheck = Math.floor(window.scrollY / (canvas.width/DIM));
+  if(wfcRowCurrent != indexCheck)
+  {
+    wfcRowCurrent = indexCheck;
+    console.log(wfcRowCurrent);
+  }
+});
 
 function preloadImages() {
   const path = './assets/tiles/circuit-coding-train';
@@ -226,8 +239,13 @@ function wfc_algorithm(myGrid){
 }
 
 function draw(){
-  const w = tileImages[0].width / DIM;
-  const h = tileImages[0].height / DIM;
+  /*
+
+  */
+  // const w = tileImages[0].width / DIM;
+  // const h = tileImages[0].height / DIM;
+  const w = canvas.width / DIM;
+  const h = w;// canvas.height / DIM;
   for (let j = 0; j < DIM; j++) {
     for (let i = 0; i < DIM; i++) {
       let cell = grid[i + j * DIM];

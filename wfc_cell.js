@@ -2,6 +2,8 @@ class Cell {
   constructor(value, ind) {
     this.collapsed = false;
     this.index = ind;
+    this.row = Math.floor(ind/wfcRowCount);
+    this.col = ind % wfcRowCount;
     // get index values for each neighbor
     this.neighbors = [
       ind-DIM >= 0 ? ind-DIM : -1, // up neighbor cell

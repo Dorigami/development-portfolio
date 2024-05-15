@@ -10,6 +10,7 @@ GENERAL STYLING
   
   body {
     font-family: "Poppins", sans-serif;
+    z-index: 0;
   }
   
   html {
@@ -27,6 +28,11 @@ GENERAL STYLING
     transition: all 300ms ease;
   }
   
+  .background-cv {
+    position: absolute;
+    z-index: -1;
+  }
+
   /* DESKTOP NAV */
   
   nav,
