@@ -26,6 +26,7 @@ document.addEventListener("scroll", (event) => {
   if(wfcRowCurrent != indexCheck)
   {
     wfcRowCurrent = indexCheck;
+    document.documentElement.clientHeight;
     console.log(wfcRowCurrent);
   }
 });
@@ -236,6 +237,12 @@ function wfc_algorithm(myGrid){
   }
   // run algorithm on the grid again with current changes
   return wfc_algorithm(myGrid); 
+}
+
+function wfc_row(rowIndex){
+  const size = canvas.width / DIM;
+  const visibleRows = document.documentElement.clientHeight;
+
 }
 
 function draw(){
