@@ -2,14 +2,14 @@ class Cell {
   constructor(value, ind) {
     this.collapsed = false;
     this.index = ind;
-    this.row = Math.floor(ind/wfcRowCount);
-    this.col = ind % wfcRowCount;
+    this.row = Math.floor(ind/DIM);
+    this.col = ind % DIM;
     // get index values for each neighbor
     this.neighbors = [
       ind-DIM >= 0 ? ind-DIM : -1, // up neighbor cell
-      Math.floor(ind/DIM) == Math.floor((ind+1)/DIM) ? ind+1 : -1, // right neighbor cell
-      ind+DIM < DIM*DIM ? ind+DIM : -1, // down neighbor cell
-      Math.floor(ind/DIM) == Math.floor((ind-1)/DIM) ? ind-1 : -1, // left neighbor cell
+      Math.floor((ind+1)/DIM) == this.row ? ind+1 : -1, // right neighbor cell
+      ind+DIM < DIM*wfcRowCount ? ind+DIM : -1, // down neighbor cell
+      Math.floor((ind-1)/DIM) == this.row ? ind-1 : -1, // left neighbor cell
     ];
     this.neighborObjects = [
       this.neighbors[0] == -1 ? -1 : grid[this.neighbors[0]],

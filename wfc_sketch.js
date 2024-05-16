@@ -3,7 +3,7 @@
 const tileImages = [];
 const DIM = 8;
 let tileSize = 0;
-let wfcRowCount = 12;
+let wfcRowCount = 50;
 let wfcRowCurrent = 0;
 let grid = [];
 let tiles = [];
@@ -12,12 +12,21 @@ let tilesHaveLoaded = 0;
 // create the canvas
 const canvas = document.getElementById('wfc_canvas'); 
 const ctx = canvas.getContext("2d"); 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight*4;
+/*
+var body = document.body,
+    html = document.documentElement;
+var totalHeight = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+console.log("width = " + document.querySelector('body').width);
+console.log("height = " + height);
+*/
+
 
 window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
+  canvas.width = document.documentElement.clientWidth;
+  //canvas.height = window.innerHeight;
   draw(canvas)
 })
 
@@ -25,9 +34,8 @@ document.addEventListener("scroll", (event) => {
   let indexCheck = Math.floor(window.scrollY / (canvas.width/DIM));
   if(wfcRowCurrent != indexCheck)
   {
+    //
     wfcRowCurrent = indexCheck;
-    document.documentElement.clientHeight;
-    console.log(wfcRowCurrent);
   }
 });
 
@@ -107,15 +115,19 @@ function removeDuplicatedTiles(tiles) {
 
 function startOver() {
   // Create cell for each spot on the grid
-  for (let i = 0; i < DIM * DIM; i++) {
+  for (let i = 0; i < DIM * wfcRowCount; i++) {
     grid[i] = new Cell(tiles.length, i);
   }
   // collapse a random number of cells prior to running algorithm
-  for(let i=0; i <= Math.floor(Math.random()*5); i++){
-    let randInd = Math.floor(Math.random()*grid.length);
-    grid[randInd].collapse();
-    updateOptions();
+  for(let i=0; i < wfcRowCount; i++){
+    for(let k=0; k <= Math.floor(Math.random()*2); k++){
+      let randInd = Math.floor(Math.random()*DIM);
+      randInd += i*DIM;
+      //console.log("random index = " + randInd + " / " + grid.length);
+      grid[randInd].collapse(1);
+    }
   }
+  updateOptions();
 }
 
 function checkValid(arr, valid) {
@@ -127,16 +139,15 @@ function checkValid(arr, valid) {
   }
 }
 function updateOptions(){
-  for (let j = 0; j < DIM; j++) {
-    for (let i = 0; i < DIM; i++) {
-      let index = i + j * DIM;
-      if (grid[index].collapsed) continue;
-
+  for (let i = 0; i < grid.length; i++) {
+      let cell = grid[i];
+      if (cell.collapsed) continue;
+      // console.log("index: "+i+"["+cell.col+","+cell.row+"] neighbors: "+ cell.neighbors)
       // create an array containing all options, then remove invalid ones
       let remainingOptions = new Array(tiles.length).fill(0).map((x, i) => i);
       // Look up
-      if (j > 0) {
-        let up = grid[i + (j - 1) * DIM];
+      if (cell.row > 0) {
+        let up = grid[cell.neighbors[0]];
         let validOptions = [];
         for (let option of up.options) {
           let valid = tiles[option].down;
@@ -145,8 +156,8 @@ function updateOptions(){
         checkValid(remainingOptions, validOptions);
       }
       // Look right
-      if (i < DIM - 1) {
-        let right = grid[i + 1 + j * DIM];
+      if (cell.col < DIM - 1) {
+        let right = grid[cell.neighbors[1]];
         let validOptions = [];
         for (let option of right.options) {
           let valid = tiles[option].left;
@@ -155,8 +166,8 @@ function updateOptions(){
         checkValid(remainingOptions, validOptions);
       }
       // Look down
-      if (j < DIM - 1) {
-        let down = grid[i + (j + 1) * DIM];
+      if (cell.row < wfcRowCount - 1) {
+        let down = grid[cell.neighbors[2]];
         let validOptions = [];
         for (let option of down.options) {
           let valid = tiles[option].up;
@@ -165,8 +176,8 @@ function updateOptions(){
         checkValid(remainingOptions, validOptions);
       }
       // Look left
-      if (i > 0) {
-        let left = grid[i - 1 + j * DIM];
+      if (cell.col > 0) {
+        let left = grid[cell.neighbors[3]];
         let validOptions = [];
         for (let option of left.options) {
           let valid = tiles[option].right;
@@ -175,14 +186,8 @@ function updateOptions(){
         checkValid(remainingOptions, validOptions);
       }
       // give new options to the cell
-      grid[index].options = remainingOptions
-    }
+      cell.options = remainingOptions;
   }
-}
-function mousePressed() {
-  startOver();
-  grid = wfc_algorithm(grid.slice());
-  draw();
 }
 
 function wfc_algorithm(myGrid){
@@ -195,7 +200,15 @@ function wfc_algorithm(myGrid){
   }
   
   // exit algorithm when all cells are collapsed
-  if (collapsedCells.length == DIM*DIM) {
+  /*
+    this will be set to target the initial tiles that will be on screen
+    to help load the page faster, the other tiles will be loaded as you scroll
+  */
+ let h = window.innerHeight;
+ let tileSize = canvas.width/DIM;
+ let tilesInView = Math.ceil(h/tileSize);
+ console.log("window height: "+h+" | tile: "+tileSize+" | tileRows: "+tilesInView);
+  if (collapsedCells.length == DIM*tilesInView) {
     console.log("wfc_algo exited, all cells collapsed");
     return myGrid;
   }
@@ -247,8 +260,6 @@ function wfc_row(rowIndex){
 
 function draw(){
   /*
-
-  */
   // const w = tileImages[0].width / DIM;
   // const h = tileImages[0].height / DIM;
   const w = canvas.width / DIM;
@@ -268,6 +279,24 @@ function draw(){
     }
   }
 }
-
+*/
+const w = canvas.width / DIM;
+const h = w;// canvas.height / DIM;
+for (let i = 0; i < grid.length; i++) {
+    let cell = grid[i];
+    let xPos = cell.col*w+cell.col;
+    let yPos = cell.row*h+cell.row;
+    // console.log("["+i+", "+j+"] = " + cell.options)
+    if (cell.collapsed) {
+      let tileIndex = cell.options[0];
+      ctx.drawImage(tiles[tileIndex].img, xPos, yPos, w, h);
+    } else {
+      // draw gray box instead of tile
+      ctx.fillStyle = 'rgb(40,40,40)';
+      ctx.fillRect(xPos,yPos,w,h);
+    }
+  
+}
+}
 // START THE WFC ALGORITHM
 preloadImages();
