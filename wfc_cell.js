@@ -30,8 +30,11 @@ class Cell {
     // reduce options down to one
     this.collapsed = this.options.length <= 1;
     if(!this.collapsed){
-      let chosenTile = ind == undefined ? Math.floor(Math.random()*this.options.length) : ind;
-      this.options = [this.options[chosenTile]];
+      if(ind == undefined){
+        this.options = [this.options[Math.floor(Math.random()*this.options.length)]];
+      } else {
+        this.options = [ind];
+      }
       this.collapsed = true;
     }
     // returns false when the collapse is a failure

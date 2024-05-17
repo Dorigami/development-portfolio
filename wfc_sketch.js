@@ -1,41 +1,61 @@
 // vars for WFC
 
 const tileImages = [];
-const DIM = 8;
+const DIM = 6;
 let tileSize = 0;
-let wfcRowCount = 50;
-let wfcRowCurrent = 0;
 let grid = [];
 let tiles = [];
 let imagesLoaded = 0;
 let tilesHaveLoaded = 0;
+let body = document.body;
+let html = document.documentElement;
+var totalHeight = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
 // create the canvas
 const canvas = document.getElementById('wfc_canvas'); 
 const ctx = canvas.getContext("2d"); 
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight*4;
-/*
-var body = document.body,
-    html = document.documentElement;
-var totalHeight = Math.max( body.scrollHeight, body.offsetHeight, 
-                       html.clientHeight, html.scrollHeight, html.offsetHeight );
-console.log("width = " + document.querySelector('body').width);
-console.log("height = " + height);
-*/
+canvas.height = totalHeight;// window.innerHeight*4;
 
+
+console.log("width = " + document.querySelector('body').width);
+console.log("height = " + html.clientHeight +"/"+totalHeight);
+
+// variables for tile tracking
+let wfcRowCount = 50;
+let wfcRowsLoaded = 0;
+let wfcTilesInView = Math.ceil(html.clientHeight / (canvas.width/DIM));
+
+console.log("tiles in view: " + wfcTilesInView);
 
 window.addEventListener('resize', () => {
-  canvas.width = document.documentElement.clientWidth;
+  canvas.width = html.clientWidth;
+  let lowestRowInView = html.clientHeight + html.scrollHeight;
+  console.log("bottom pos = " + lowestRowInView);
+  let tilesInViewCheck = Math.floor(document.documentElement.clientHeight / (canvas.width/DIM));
+  if(tilesInViewCheck != wfcTilesInView){
+    // perform wfc if the view increased
+    if(tilesInViewCheck > wfcTilesInView){
+      for(let i=0;i<tilesInViewCheck-wfcTilesInView;i++){
+        //wfc_row(wfcRowCurrent+1);
+      }
+    }
+    wfcTilesInView = tilesInViewCheck;
+  }
   //canvas.height = window.innerHeight;
   draw(canvas)
 })
 
 document.addEventListener("scroll", (event) => {
+  let lowestRowInView = html.clientTop;
+  console.log("bottom pos = " + lowestRowInView);
   let indexCheck = Math.floor(window.scrollY / (canvas.width/DIM));
   if(wfcRowCurrent != indexCheck)
   {
-    //
-    wfcRowCurrent = indexCheck;
+    //keep track
+    //wfcRowCurrent = indexCheck;
+    //wfc_row(wfcRowCurrent);
+    draw();
   }
 });
 
@@ -98,7 +118,7 @@ function tileLoaded(){
     startOver();
 
     // run algorithm once the grid has been setup
-    grid = wfc_algorithm(grid.slice());
+    // grid = wfc_algorithm(grid.slice());
 
     // place tiles onto the canvas after all cells are collapsed
     draw();
@@ -253,9 +273,44 @@ function wfc_algorithm(myGrid){
 }
 
 function wfc_row(rowIndex){
-  const size = canvas.width / DIM;
-  const visibleRows = document.documentElement.clientHeight;
+  candidateCells = [];
+  startIndex = rowIndex*DIM;
+  for(let i=startIndex; i<startIndex+DIM; i++){
+    if(!grid[i].collapsed) candidateCells.push(grid[i]);
+  }
+  if (candidateCells.length == 0) {
+    console.log("wfc_row_algo [ "+rowIndex+" ] exited, there are no candidates");
+    return;
+  }
 
+  // get candidate with the lowest entropy (cell that has the fewest options)
+  candidateCells.sort((a, b) => {
+    return a.options.length - b.options.length;
+  });
+  // given the case that lowest entropy is shared by multiple cells,
+  // count how many and store it as stopIndex
+  let len = candidateCells[0].options.length;
+  let stopIndex = 0;
+  for (let i = 1; i < candidateCells.length; i++) {
+    if (candidateCells[i].options.length > len) {
+      stopIndex = i-1;
+      break;
+    }
+  }
+
+  // pick a cell at random from lowest entropy cells, and collapse it
+  let chosenCell = candidateCells[Math.floor(Math.random()*stopIndex)];
+  if(chosenCell.collapse() == false){
+    //restart algorithm whenever a cell fails to collapse to a valid tile
+    console.log("cell collapse failed");
+    return;
+  } else {
+    //recalulate options for all currently, non-collapsed cells
+    console.log("collapse cell "+chosenCell.index);
+    updateOptions();
+  }
+  // run algorithm on the grid again with current changes
+  return wfc_row(rowIndex); 
 }
 
 function draw(){
