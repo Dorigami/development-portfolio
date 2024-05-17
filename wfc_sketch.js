@@ -9,55 +9,41 @@ let imagesLoaded = 0;
 let tilesHaveLoaded = 0;
 let body = document.body;
 let html = document.documentElement;
-var totalHeight = Math.max( body.scrollHeight, body.offsetHeight, 
-                       html.clientHeight, html.scrollHeight, html.offsetHeight );
 // create the canvas
 const canvas = document.getElementById('wfc_canvas'); 
 const ctx = canvas.getContext("2d"); 
-canvas.width = window.innerWidth;
-canvas.height = totalHeight;// window.innerHeight*4;
+ctx.globalAlpha = 0;
+canvas.width = html.clientWidth;
+canvas.height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
 
-
-console.log("width = " + document.querySelector('body').width);
-console.log("height = " + html.clientHeight +"/"+totalHeight);
+console.log("height = " + html.clientHeight +"/"+canvas.height);
 
 // variables for tile tracking
-let wfcRowCount = 50;
-let wfcRowsLoaded = 0;
-let wfcTilesInView = Math.ceil(html.clientHeight / (canvas.width/DIM));
-
-console.log("tiles in view: " + wfcTilesInView);
+let wfcRowCount = 0;//Math.ceil(canvas.height / canvas.width / DIM);
+//let wfcRowsLoaded = 0;
+//let wfcTilesInView = Math.ceil(html.clientHeight / (canvas.width/DIM));
 
 window.addEventListener('resize', () => {
   canvas.width = html.clientWidth;
-  let lowestRowInView = html.clientHeight + html.scrollHeight;
-  console.log("bottom pos = " + lowestRowInView);
-  let tilesInViewCheck = Math.floor(document.documentElement.clientHeight / (canvas.width/DIM));
-  if(tilesInViewCheck != wfcTilesInView){
-    // perform wfc if the view increased
-    if(tilesInViewCheck > wfcTilesInView){
-      for(let i=0;i<tilesInViewCheck-wfcTilesInView;i++){
-        //wfc_row(wfcRowCurrent+1);
-      }
+  canvas.height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+  
+  // check for extended row count
+  let newRowCount = Math.ceil(canvas.height / canvas.width / DIM);
+  if(newRowCount > wfcRowCount){
+    console.log("rowcount changed from "+wfcRowCount+" to "+newRowCount);
+    for(let i=wfcRowCount; i < newRowCount; i++)
+    { // add row of cells
+      for(let j=0; j<DIM; j++){ grid.push(new Cell(tiles.length, i+j)) }
     }
-    wfcTilesInView = tilesInViewCheck;
+    updateOptions();
+    // collapse cells for the row
+    for(let i=wfcRowCount; i < newRowCount; i++) { wfc_row(i) }
+    wfcRowCount = newRowCount;
   }
-  //canvas.height = window.innerHeight;
   draw(canvas)
 })
 
-document.addEventListener("scroll", (event) => {
-  let lowestRowInView = html.clientTop;
-  console.log("bottom pos = " + lowestRowInView);
-  let indexCheck = Math.floor(window.scrollY / (canvas.width/DIM));
-  if(wfcRowCurrent != indexCheck)
-  {
-    //keep track
-    //wfcRowCurrent = indexCheck;
-    //wfc_row(wfcRowCurrent);
-    draw();
-  }
-});
+
 
 function preloadImages() {
   const path = './assets/tiles/circuit-coding-train';
@@ -104,10 +90,25 @@ function imageLoaded(){
     preloadTiles();
   }
 }
+function canvasFadeIn(){
+  ctx.globalAlpha *= 1.2;
+  if(ctx.globalAlpha >= 1) 
+  {
+    ctx.globalAlpha = 1;
+  } else {
+    setTimeout(canvasFadeIn, 0.005);
+  }
+  draw();
+}
 function tileLoaded(){
   tilesHaveLoaded++;
   if(tilesHaveLoaded >= tileImages.length*4)
   {
+    // set canvas
+    canvas.width = html.clientWidth;
+    canvas.height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+    wfcRowCount = Math.ceil(canvas.height / (canvas.width / DIM));
+    
     // Generate the adjacency rules based on edges
     for (let i = 0; i < tiles.length; i++) {
       const tile = tiles[i];
@@ -118,10 +119,11 @@ function tileLoaded(){
     startOver();
 
     // run algorithm once the grid has been setup
-    // grid = wfc_algorithm(grid.slice());
+    grid = wfc_algorithm(grid.slice());
 
-    // place tiles onto the canvas after all cells are collapsed
-    draw();
+    // draw tiles with a fade in effect
+    ctx.globalAlpha = 0.0001;
+    setTimeout(canvasFadeIn, 0.01);
   }
 }
 function removeDuplicatedTiles(tiles) {
@@ -140,7 +142,7 @@ function startOver() {
   }
   // collapse a random number of cells prior to running algorithm
   for(let i=0; i < wfcRowCount; i++){
-    for(let k=0; k <= Math.floor(Math.random()*2); k++){
+    for(let k=0; k <= 2 + Math.floor(Math.random()*2); k++){
       let randInd = Math.floor(Math.random()*DIM);
       randInd += i*DIM;
       //console.log("random index = " + randInd + " / " + grid.length);
@@ -220,15 +222,7 @@ function wfc_algorithm(myGrid){
   }
   
   // exit algorithm when all cells are collapsed
-  /*
-    this will be set to target the initial tiles that will be on screen
-    to help load the page faster, the other tiles will be loaded as you scroll
-  */
- let h = window.innerHeight;
- let tileSize = canvas.width/DIM;
- let tilesInView = Math.ceil(h/tileSize);
- console.log("window height: "+h+" | tile: "+tileSize+" | tileRows: "+tilesInView);
-  if (collapsedCells.length == DIM*tilesInView) {
+  if (collapsedCells.length == DIM*wfcRowCount) {
     console.log("wfc_algo exited, all cells collapsed");
     return myGrid;
   }
@@ -314,44 +308,22 @@ function wfc_row(rowIndex){
 }
 
 function draw(){
-  /*
-  // const w = tileImages[0].width / DIM;
-  // const h = tileImages[0].height / DIM;
   const w = canvas.width / DIM;
   const h = w;// canvas.height / DIM;
-  for (let j = 0; j < DIM; j++) {
-    for (let i = 0; i < DIM; i++) {
-      let cell = grid[i + j * DIM];
+  for (let i = 0; i < grid.length; i++) {
+      let cell = grid[i];
+      let xPos = cell.col*w;//+cell.col;
+      let yPos = cell.row*h;//+cell.row;
       // console.log("["+i+", "+j+"] = " + cell.options)
       if (cell.collapsed) {
-        let index = cell.options[0];
-        ctx.drawImage(tiles[index].img, i*w-i, j*h-j, w, h);
+        let tileIndex = cell.options[0];
+        ctx.drawImage(tiles[tileIndex].img, xPos, yPos, w, h);
       } else {
         // draw gray box instead of tile
         ctx.fillStyle = 'rgb(40,40,40)';
-        ctx.fillRect(i*w,j*h,w,h);
+        ctx.fillRect(xPos,yPos,w,h);
       }
-    }
   }
-}
-*/
-const w = canvas.width / DIM;
-const h = w;// canvas.height / DIM;
-for (let i = 0; i < grid.length; i++) {
-    let cell = grid[i];
-    let xPos = cell.col*w+cell.col;
-    let yPos = cell.row*h+cell.row;
-    // console.log("["+i+", "+j+"] = " + cell.options)
-    if (cell.collapsed) {
-      let tileIndex = cell.options[0];
-      ctx.drawImage(tiles[tileIndex].img, xPos, yPos, w, h);
-    } else {
-      // draw gray box instead of tile
-      ctx.fillStyle = 'rgb(40,40,40)';
-      ctx.fillRect(xPos,yPos,w,h);
-    }
-  
-}
 }
 // START THE WFC ALGORITHM
 preloadImages();
