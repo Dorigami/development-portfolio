@@ -46,8 +46,9 @@ window.addEventListener('resize', () => {
 
 
 function preloadImages() {
-  const path = './assets/tiles/circuit-coding-train';
-  for (let i = 0; i < 13; i++) {
+  // const path = './assets/tiles/circuit-coding-train';
+  const path = './assets/tiles/new-circuit';
+  for (let i = 0; i < 21; i++) {
       var _img = new Image();
       _img.onload = imageLoaded;
       _img.src = `${path}/${i}.png`;
@@ -56,6 +57,7 @@ function preloadImages() {
 }
 
 function preloadTiles(){
+  /*
   // Loaded and created the tiles
   tiles[0] = new Tile(tileImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
   tiles[1] = new Tile(tileImages[1], ['BBB', 'BBB', 'BBB', 'BBB']);
@@ -70,6 +72,30 @@ function preloadTiles(){
   tiles[10] = new Tile(tileImages[10], ['BCB', 'BCB', 'BCB', 'BCB']);
   tiles[11] = new Tile(tileImages[11], ['BCB', 'BCB', 'BBB', 'BBB']);
   tiles[12] = new Tile(tileImages[12], ['BBB', 'BCB', 'BBB', 'BCB']);
+  */
+  // Loaded and created the tiles
+  tiles[0]  = new Tile(tileImages[0],  ['___', '___', '___', '___']);
+  tiles[1]  = new Tile(tileImages[1],  ['___', '___', '_B_', '___']);
+  tiles[2]  = new Tile(tileImages[2],  ['___', '___', 'C_C', '___']);
+  tiles[3] = new Tile(tileImages[3], ['___', '___', 'DDD', '___']);
+  tiles[4]  = new Tile(tileImages[4],  ['_B_', '___', '_B_', '___']);
+  tiles[5]  = new Tile(tileImages[5],  ['_B_', '_B_', '_B_', '_B_']);
+  tiles[6]  = new Tile(tileImages[6],  ['___', '___', '_B_', '_B_']);
+  tiles[7]  = new Tile(tileImages[7],  ['___', '_B_', '_B_', '_B_']);
+  tiles[8]  = new Tile(tileImages[8],  ['C_C', '___', '_B_', '___']);
+  tiles[9]  = new Tile(tileImages[9],  ['C_C', '___', 'C_C', '___']);
+  tiles[10]  = new Tile(tileImages[10],  ['DDD', '___', 'C_C', '___']);
+  tiles[11] = new Tile(tileImages[11], ['C_C', '___', 'C_C', 'C_C']);
+  tiles[12] = new Tile(tileImages[12], ['C_C', '_B_', '___', '___']);
+  tiles[13] = new Tile(tileImages[13], ['DDD', '___', 'DDD', '___']);
+  tiles[14] = new Tile(tileImages[14], ['DDD', 'DDD', '___', '___']);
+  tiles[15] = new Tile(tileImages[15], ['DDD', 'DDD', 'DDD', '___']);
+  tiles[16] = new Tile(tileImages[16], ['DDD', 'C_C', '___', '___']);  
+  tiles[17] = new Tile(tileImages[17], ['C_C', '___', '___', '_B_']);
+  tiles[18] = new Tile(tileImages[18], ['DDD', '___', '___', 'C_C']);
+  tiles[19] = new Tile(tileImages[19], ['DDD', '___', '___', '_B_']);
+  tiles[20] = new Tile(tileImages[20], ['DDD', '_B_', '___', '___']);
+
   for (let i = 0; i < tiles.length; i++) {
     tiles[i].index = i;
   }
@@ -146,7 +172,7 @@ function startOver() {
       let randInd = Math.floor(Math.random()*DIM);
       randInd += i*DIM;
       //console.log("random index = " + randInd + " / " + grid.length);
-      grid[randInd].collapse(1);
+      grid[randInd].collapse(0);
     }
   }
   updateOptions();
