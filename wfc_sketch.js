@@ -45,7 +45,7 @@ window.addEventListener('resize', () => {
 
 function preloadImages() {
   // const path = './assets/tiles/circuit-coding-train';
-  const path = './assets/tiles/new-circuit';
+  const path = './assets/tiles/circuit';
   for (let i = 0; i < 21; i++) {
       var _img = new Image();
       _img.onload = imageLoaded;
@@ -168,6 +168,7 @@ function checkValid(arr, valid) {
     }
   }
 }
+
 function updateOptions(){
   for (let i = 0; i < grid.length; i++) {
       let cell = grid[i];
@@ -219,9 +220,9 @@ function updateOptions(){
       cell.options = remainingOptions;
   }
 }
+/* this algo will search the whole grid to collapse a cell, the other one will only used cells which neighbor collapsed cells to decide
 
 function wfc_algorithm(myGrid){
-
   // create a list to contain checked nodes and nodes yet to be checked
   collapsedCells = [];
   candidateCells = [];
@@ -272,6 +273,81 @@ function wfc_algorithm(myGrid){
   }
   // run algorithm on the grid again with current changes
   return wfc_algorithm(myGrid); 
+}
+*/
+let loopCount = 0;
+function wfc_algorithm(myGrid, candidateCells){
+  if(myGrid == undefined) myGrid = grid.slice();
+  // create a list to contain checked nodes and nodes yet to be checked
+  if(candidateCells == undefined) 
+  { // get initial candidates as the neighbors of all collapsed cells
+    candidateCells = [];
+    for(let i=0;i<myGrid.length;i++){
+      var cell = myGrid[i];
+      if(cell.collapsed){
+        for(k=0;k<4;k++){
+if(cell.neighbors[k] == -1 || myGrid[cell.neighbors[k]].collapsed) continue;
+          let myNeighbor = myGrid[cell.neighbors[k]];
+          if(!myNeighbor.collapsed && !candidateCells.includes(myNeighbor))
+            { candidateCells.push(myNeighbor) }
+        }
+      }
+    }
+  }
+
+  // remove any collapsed cells, get their neighbors while this is done
+  for(let i=candidateCells.length-1;i>=0;i--){
+    var cell = candidateCells[i];
+    if(cell.collapsed){
+    // get neighbors
+    for(k=0;k<4;k++){
+if(cell.neighbors[k] == -1 || myGrid[cell.neighbors[k]].collapsed) continue;
+      let myNeighbor = myGrid[cell.neighbors[k]];
+      if(!myNeighbor.collapsed && !candidateCells.includes(myNeighbor))
+        { candidateCells.push(myNeighbor) }
+    }
+    // remove candidate
+    candidateCells.splice(i,1);
+  }
+  }
+  if(candidateCells.length == 0){
+    console.log("wfc_algo exited, all cells collapsed");
+    return myGrid;
+  }
+  // get candidate with the lowest entropy (cell that has the fewest options)
+  candidateCells.sort((a, b) => {
+    return a.options.length - b.options.length;
+  });
+  // given the case that lowest entropy is shared by multiple cells,
+  // count how many and store it as stopIndex
+  let len = candidateCells[0].options.length;
+  let stopIndex = 0;
+  for (let i = 1; i < candidateCells.length; i++) {
+    if (candidateCells[i].options.length > len) {
+      stopIndex = i-1;
+      break;
+    }
+  }
+
+  // pick a cell at random from lowest entropy cells, and collapse it
+  let chosenCell = candidateCells[Math.floor(Math.random()*stopIndex)];
+  if(chosenCell.collapse() == false){
+    //restart algorithm whenever a cell fails to collapse to a valid tile
+    startOver();
+    myGrid = grid.slice();
+  } else {
+    //recalulate options for all currently, non-collapsed cells
+    updateOptions();
+  }
+  // do partial load in case of excess recursion
+  if(++loopCount > 30){
+    loopCount = 0;
+    console.log("timeout!!!!!!!!!!!!!!");
+    setTimeout(wfc_algorithm,1);
+    return myGrid;
+  }
+  // run algorithm on the grid again with current changes
+  return wfc_algorithm(myGrid, candidateCells); 
 }
 
 function wfc_row(rowIndex){
