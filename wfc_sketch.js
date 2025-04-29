@@ -45,7 +45,7 @@ window.addEventListener('resize', () => {
 
 function preloadImages() {
   // const path = './assets/tiles/circuit-coding-train';
-  const path = './assets/tiles/circuit';
+  const path = './assets/tiles/circuit-blank';
   for (let i = 0; i < 21; i++) {
       var _img = new Image();
       _img.onload = imageLoaded;

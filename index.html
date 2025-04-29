@@ -3,13 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+
+    <!-- Set the title bar of the page -->
+    <title>D.P. Development Portfolio</title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
     <link rel="stylesheet" href="style.css"/>
     <link rel="stylesheet" href="mediaqueries.css"/>
+    <script src="html5game/galactic-racer.js" defer></script>
   </head>
 
   <body>
-    <main></main>
     <!-- WFC ELEMENTS -->
     <canvas class="background-cv" id="wfc_canvas" width="1200" height="1200"></canvas>
     <script src="wfc_tile.js"></script>
@@ -17,18 +20,17 @@
     <script src="wfc_sketch.js"></script>
     <!-- PORTFOLIO ELEMENTS -->
     <nav id="desktop-nav">
-      <div class="logo">John Doe</div>
+      <div class="logo">Dorian Payton</div>
       <div>
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
-          <li><a href="#experience">Experience</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
     </nav>
     <nav id="hamburger-nav">
-      <div class="logo">John Doe</div>
+      <div class="logo">Dorian Payton</div>
       <div class="hamburger-menu">
         <div class="hamburger-icon" onclick="toggleMenu()">
           <span></span>
@@ -37,7 +39,6 @@
         </div>
         <div class="menu-links">
           <li><a href="#about" onclick="toggleMenu()">About</a></li>
-          <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
           <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
           <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
         </div>
@@ -45,12 +46,12 @@
     </nav>
     <section id="profile">
       <div class="section__pic-container">
-        <img src="./assets/profile-pic.png" alt="John Doe profile picture" />
+        <img src="./assets/profile-pic.png" alt="profile picture" class="profile-pic" />
       </div>
       <div class="section__text">
         <p class="section__text__p1">Hello, I'm</p>
-        <h1 class="title">John Doe</h1>
-        <p class="section__text__p2">Frontend Developer</p>
+        <h1 class="title">Dorian Payton</h1>
+        <p class="section__text__p2">Software Developer</p>
         <div class="btn-container">
           <button
             class="btn btn-color-2"
@@ -82,13 +83,6 @@
       <p class="section__text__p1">Get To Know More</p>
       <h1 class="title">About Me</h1>
       <div class="section-container">
-        <div class="section__pic-container">
-          <img
-            src="./assets/about-pic.png"
-            alt="Profile picture"
-            class="about-pic"
-          />
-        </div>
         <div class="about-details-container">
           <div class="about-containers">
             <div class="details-container">
@@ -126,140 +120,6 @@
         src="./assets/arrow.png"
         alt="Arrow icon"
         class="icon arrow"
-        onclick="location.href='./#experience'"
-      />
-    </section>
-    <section id="experience">
-      <p class="section__text__p1">Explore My</p>
-      <h1 class="title">Experience</h1>
-      <div class="experience-details-container">
-        <div class="about-containers">
-          <div class="details-container">
-            <h2 class="experience-sub-title">Frontend Development</h2>
-            <div class="article-container">
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>HTML</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>CSS</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>SASS</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>JavaScript</h3>
-                  <p>Basic</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>TypeScript</h3>
-                  <p>Basic</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Material UI</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-            </div>
-          </div>
-          <div class="details-container">
-            <h2 class="experience-sub-title">Frontend Development</h2>
-            <div class="article-container">
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>PostgreSQL</h3>
-                  <p>Basic</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Node JS</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Express JS</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Git</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-      </div>
-      <img
-        src="./assets/arrow.png"
-        alt="Arrow icon"
-        class="icon arrow"
         onclick="location.href='./#projects'"
       />
     </section>
@@ -269,51 +129,53 @@
       <div class="experience-details-container">
         <div class="about-containers">
           <div class="details-container color-container">
+
+            <h2 class="experience-sub-title project-title">Galactic Racer [ In development... ] </h2>
+            <h3 class="experience-sub-title project-title">HTML5 Support </h3>
             <div class="article-container">
-              <img
-                src="./assets/project-1.png"
-                alt="Project 1"
-                class="project-img"
-              />
+              <p>
+                This is a Galaga inspired arcade shoot'em up with a few added featues to keep things lively.
+                You can choose your path to victory through Fight or Flight: you can outpace your persuers through engine upgrades or them head on
+                with pure firepower, each weapon has their use case as well as unique upgrade paths.
+              </p>
+              <iframe src="arcade-shooter/index.html" title="description" class="game_window"></iframe> 
             </div>
-            <h2 class="experience-sub-title project-title">Project One</h2>
             <div class="btn-container">
               <button
                 class="btn btn-color-2 project-btn"
-                onclick="location.href='https://github.com/'"
-              >
-                Github
-              </button>
-              <button
-                class="btn btn-color-2 project-btn"
-                onclick="location.href='https://github.com/'"
-              >
-                Live Demo
-              </button>
+                onclick="location.href='https://github.com/Dorigami/galactic-racer'"
+              >Github</button>
             </div>
           </div>
           <div class="details-container color-container">
+            <h2 class="experience-sub-title project-title">Star Checkers</h2>
+            <h3 class="experience-sub-title project-title">Windows & Android support</h3>
             <div class="article-container">
+              <p>
+                This is a simple implementation of Chinese Checkers.  It is my first attempt at self-publishing a feature-complete project.
+                It is a comfy board game where you can play against bots or friends in local-multiplayer.  The game is currently on closed-release 
+                Google Play, pending playtest feedback.  In the meantime, check it out on my Itch.io page!
+              </p>
+              <img 
+                src="Project2-star-checkers/star-checkers-banner-3.png" 
+                alt="Star Checkers: Banner" 
+                class="project-img"
+              />
               <img
-                src="./assets/project-2.png"
-                alt="Project 2"
+                src="Project2-star-checkers/gameplay_small.gif"
+                alt="Star Checkers: Gameplay"
                 class="project-img"
               />
             </div>
-            <h2 class="experience-sub-title project-title">Project Two</h2>
             <div class="btn-container">
               <button
                 class="btn btn-color-2 project-btn"
-                onclick="location.href='https://github.com/'"
-              >
-                Github
-              </button>
+                onclick="location.href='https://github.com/Dorigami/StarChess'"
+              >Github</button>
               <button
                 class="btn btn-color-2 project-btn"
-                onclick="location.href='https://github.com/'"
-              >
-                Live Demo
-              </button>
+                onclick="location.href='https://dorigami.itch.io/star-checkers'"
+              >Itch.io Page</button>
             </div>
           </div>
           <div class="details-container color-container">
@@ -329,15 +191,11 @@
               <button
                 class="btn btn-color-2 project-btn"
                 onclick="location.href='https://github.com/'"
-              >
-                Github
-              </button>
+              >Github</button>
               <button
                 class="btn btn-color-2 project-btn"
                 onclick="location.href='https://github.com/'"
-              >
-                Live Demo
-              </button>
+              >Live Demo</button>
             </div>
           </div>
         </div>
@@ -382,12 +240,15 @@
           </ul>
         </div>
       </nav>
-      <p>Copyright &#169; 2023 John Doe. All Rights Reserved.</p>
+      <p>Copyright &#169; 2025 Dorian Payton. All Rights Reserved.</p>
     </footer>
-    <script src="script.js"></script>
+    <script>
+      function toggleMenu(){
+          const menu = document.querySelector(".menu-links"); // this targets an element of the webpage and stores it as a variable
+          const icon = document.querySelector(".hamburger-icon");
+          menu.classList.toggle("open");
+          icon.classList.toggle("open");
+      }
+    </script>
   </body>
 </html>
-
-<body>
-
-</body>

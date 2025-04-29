@@ -1,6 +1,14 @@
 /*
 GENERAL STYLING 
 */
+/*
+  'HOLLOW' PATLETTE
+  #0f0f1b  rgb(15,15,27)     <- darkest ->
+  #565a75  rgb(86,90,117) 
+  #c6b7be  rgb(198,183,190) 
+  #fafbf6  rgb(250,251,246)  <- lightest ->
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,600&display=swap');
   
 * {
@@ -9,6 +17,7 @@ GENERAL STYLING
   }
   
   body {
+    background-color: rgb(250,251,246);
     font-family: "Poppins", sans-serif;
     z-index: 0;
   }
@@ -64,7 +73,9 @@ GENERAL STYLING
     text-underline-offset: 1rem;
     text-decoration-color: rgb(181, 181, 181);
   }
-  
+  .profile-pic {
+    border-radius: 50%;
+  }
   .logo {
     font-size: 2rem;
   }
@@ -445,4 +456,11 @@ EXPERIENCE
   
   footer p {
     text-align: center;
+  }
+  /*
+    Game Demo
+  */
+  .game_window {
+    width: 704px;
+    height: 704px;
   }
