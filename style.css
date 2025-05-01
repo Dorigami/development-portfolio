@@ -291,7 +291,7 @@ BUTTONS
   color: rgb(250,251,246);
 }
 .btn-color-1:hover {
-  background: rgb(250,251,246);
+  background: rgb(198,183,190);
   color: rgb(15,15,27);
 }
 .btn-color-2 {
@@ -302,10 +302,6 @@ BUTTONS
   background: rgb(15,15,27) ;
   color: rgb(250,251,246);
 }
-.btn-color-1:hover, .btn-color-2:hover { 
-    background: rgb(198,183,190);
-}
-
 
 /*
 ABOUT SECTION
