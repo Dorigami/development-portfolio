@@ -25,15 +25,18 @@ GENERAL STYLING
   html {
     scroll-behavior: smooth;
   }
-  
+  h1,h2,h3 {
+    color: rgb(15,15,27);
+  }
+  h2 {
+    font-size: smaller;
+  }
   p {
-    color: rgb(85, 85, 85);
+    color: rgb(86,90,117)
   }
   
   /* TRANSITION */
-  
-  a,
-  .btn {
+  a, .btn {
     transition: all 300ms ease;
   }
   
@@ -43,16 +46,18 @@ GENERAL STYLING
   }
 
   /* DESKTOP NAV */
-  
-  nav,
-  .nav-links {
+  nav, .nav-links {
     display: flex;
   }
   
   nav {
     justify-content: space-around;
     align-items: center;
-    height: 17vh;
+    height: 10vh;
+    background-color: rgb(198,183,190) ;
+    border-color: rgb(86,90,117);
+    border-width: 0.5rem 0rem 0.5rem 0rem;
+    border-style: solid none solid none;
   }
   
   .nav-links {
@@ -62,16 +67,16 @@ GENERAL STYLING
   }
   
   a {
-    color: black;
+    color: rgb(15,15,27) ;
     text-decoration: none;
-    text-decoration-color: rgb(250,251,246);
+    text-decoration-color: rgb(15,15,27);
   }
   
   a:hover {
-    color: grey;
+    color: rgb(86,90,117);
     text-decoration: underline;
     text-underline-offset: 1rem;
-    text-decoration-color: rgb(181, 181, 181);
+    text-decoration-color: rgb(86,90,117);
   }
   .profile-pic {
     border-radius: 50%;
@@ -102,12 +107,13 @@ GENERAL STYLING
     height: 24px;
     width: 30px;
     cursor: pointer;
+    border-radius: 0.4rem;
   }
   
   .hamburger-icon span {
     width: 100%;
     height: 2px;
-    background-color: black;
+    background-color: rgb(15,15,27) ;
     transition: all 0.3 ease-in-out;
   }
   
@@ -120,6 +126,7 @@ GENERAL STYLING
     max-height: 0;
     overflow: hidden;
     transition: all 0.3 ease-in-out;
+    border: 0rem;
   }
   
   .menu-links a {
@@ -127,7 +134,7 @@ GENERAL STYLING
     padding: 10px;
     text-align: center;
     font-size: 1.5rem;
-    color: black;
+    color: rgb(15,15,27) ;
     text-decoration: none;
     transition: all 0.3 ease-in-out;
   }
@@ -138,6 +145,8 @@ GENERAL STYLING
   
   .menu-links.open {
     max-height: 300px;
+    border-radius: 0.4rem;
+    border: 0.2rem solid rgb(86,90,117);
   }
   
   .hamburger-icon.open span:first-child {
@@ -175,7 +184,11 @@ section {
     box-sizing: border-box;
     min-height: fit-content;
 }
-
+#about, #projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .section-container {
     display: flex;
 }
@@ -196,7 +209,7 @@ section {
   height: fit-content;
   padding: 40px;
   background: rgb(250,251,246);
-  border-radius: 2rem;
+  border-radius: 0.4rem;
   border: 1rem solid rgb(86,90,117);
 }
 
@@ -268,33 +281,31 @@ BUTTONS
 }
 
 .btn-color-1, .btn-color-2 {
-    border: rgb(53,53,53) 0.1rem solid;
+  border: rgb(15,15,27) 0.1rem solid;
 }
-
 .btn-color-1:hover, .btn-color-2:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
-
-.btn-color-1, .btn-color-2:hover {
-    background: rgb(53, 53, 53);
-    color: rgb(250,251,246);
+.btn-color-1 {
+  background: rgb(15,15,27) ;
+  color: rgb(250,251,246);
 }
-
 .btn-color-1:hover {
-    background: rgb(0, 0, 0);
+  background: rgb(250,251,246);
+  color: rgb(15,15,27);
 }
-
 .btn-color-2 {
-    background: none;
+  background: rgb(250,251,246);
+  color: rgb(15,15,27);
 }
-
 .btn-color-2:hover {
-    border: rgb(250,251,246) 0.1rem solid;
+  background: rgb(15,15,27) ;
+  color: rgb(250,251,246);
+}
+.btn-color-1:hover, .btn-color-2:hover { 
+    background: rgb(198,183,190);
 }
 
-.btn-container {
-    gap: 1rem;
-}
 
 /*
 ABOUT SECTION
@@ -304,18 +315,12 @@ ABOUT SECTION
     position: relative;
 }
 
-.about-containers {
-    gap: 2rem;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
-}
-
 .about-details-container {
     justify-content: center;
     flex-direction: column;
 }
 
-.about-containers, .about-details-container {
+.about-details-container {
     display: flex;
 }
 
@@ -328,19 +333,12 @@ ABOUT SECTION
     right: -5rem;
     bottom: 2.5rem;
 }
-/*
-  'HOLLOW' PATLETTE
-  #0f0f1b  rgb(15,15,27)     <- darkest ->
-  #565a75  rgb(86,90,117) 
-  #c6b7be  rgb(198,183,190) 
-  #fafbf6  rgb(250,251,246)  <- lightest ->
-*/
 .about-details-container {
     padding: 1.5rem;
     flex: 1;
     background: rgb(250,251,246);
-    border-radius: 2rem;
-    border: 0.4rem solid rgb(86,90,117);
+    border-radius: 0.4rem;
+    border: 0.5rem solid rgb(86,90,117);
     text-align: center;
 }
 
@@ -362,20 +360,10 @@ EXPERIENCE
     position: relative;
   }
   
-  .experience-sub-title {
-    color: rgb(85, 85, 85);
-    font-weight: 600;
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
-  
   .experience-details-container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
     background: rgb(250,251,246);
-    border-radius: 2rem;
-    border: 0.4rem solid rgb(86,90,117);
+    border-radius: 0.4rem;
+    border: 0.5rem solid rgb(86,90,117);
   }
   
   .article-container {
@@ -406,27 +394,51 @@ EXPERIENCE
     position: relative;
 }
 
-.color-container {
-    border-color: rgb(163, 163, 163);
-    background: rgb(250, 250, 250);
-}
-
 .project-img {
-    border-radius: 2rem;
+    border-radius: 0.6rem;
     width: 90%;
     height: 90%;
   }
   
   .project-title {
     margin: 1rem;
-    color: black;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: rgb(15,15,27) ;
   }
-  
+
+  .project-sub-title {
+    color: rgb(15,15,27);
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 1rem;
+    margin-bottom: 2rem;
+  }
+
   .project-btn {
-    color: black;
+    color: rgb(15,15,27) ;
     border-color: rgb(163, 163, 163);
   }
   
+  .project-header {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .about-header-text-div, .projects-header-text-div {
+    display: grid;
+    place-items: center;
+    width: fit-content;
+    height: fit-content;
+    background-color: rgb(250,251,246);
+    padding: 1rem 2rem 0.2rem 2rem;
+    border-color: rgb(86,90,117) rgb(86,90,117) rgb(250,251,246) rgb(86,90,117);
+    border-width: 0.5rem 0.6rem 0.5rem 0.6rem;
+    border-style: solid solid solid solid;
+    border-radius: 1rem 1rem 0rem 0rem;
+    margin-bottom: -0.5rem;
+  }
+
   /* CONTACT */
   
   #contact {
@@ -435,18 +447,21 @@ EXPERIENCE
     flex-direction: column;
     height: 70vh;
   }
-  
+
   .contact-info-upper-container {
     display: flex;
     justify-content: center;
-    border-radius: 2rem;
-    border: rgb(53, 53, 53) 0.1rem solid;
-    border-color: rgb(163, 163, 163);
+    flex-direction: column;
+    background-color: rgb(250,251,246);
+    border: 1rem solid rgb(86,90,117);
+    border-radius: 0.4rem;
     background: (250, 250, 250);
     margin: 2rem auto;
-    padding: 0.5rem;
+    padding: 0rem;
   }
-  
+  .contact-info-upper-container > .section-header {
+    background-color: rgb(198,183,190);
+  }
   .contact-info-container {
     display: flex;
     align-items: center;
@@ -473,11 +488,16 @@ EXPERIENCE
   
   footer {
     height: 26vh;
-    margin: 0 1rem;
   }
-  
+  footer nav {
+    border-width: 0.5rem 0rem 0rem 0rem;
+    border-style: solid none none none;
+  }
   footer p {
     text-align: center;
+    background-color: rgb(198,183,190);
+    border-width: 0rem 0rem 0.5rem 0rem;
+    border-style: none none solid none;
   }
   /*
     Game Demo

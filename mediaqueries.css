@@ -3,12 +3,13 @@
         height: 83vh;
         margin-bottom: 6rem;
     }
-    .about-containers {
-        flex-wrap: wrap;
-    }
     #contact, #projects {
         height: fit-content;
     }
+    section {
+        height: fit-content;
+        margin: 2%
+    } 
 }
 @media screen and (max-width: 1200px) {
     #desktop-nav {
@@ -17,28 +18,26 @@
     #hamburger-nav {
         display: flex;
     }
-    #experience, .experience-details-container {
-        margin-top: 2rem;
-    }
-    #profile, .section-container {
-        display: block;
+
+    #profile {
+        display: grid;
+        place-items: center; /* centers both horizontally and vertically */
     }
     .arrow {
         display: none;
     }
-    section, .section-container {
+    .section-container {
+        display: block;
         height: fit-content;
     }
     section {
-        margin: 0.5%
+        height: fit-content;
+        margin: 2%
     }
     .section__pic-container {
         width: 275px;
         height: 275px;
         margin: 0 auto 2rem;
-    }
-    .about-containers {
-        margin-top: 0;
     }
 }
 
@@ -55,9 +54,9 @@
     }
     footer nav {
         height: fit-content;
-        margin-bottom: 2rem;
+        /*margin-bottom: 2rem;*/
     }
-    .about-containers, .contact-info-upper-container, .btn-container {
+    .contact-info-upper-container, .btn-container {
         flex-wrap: wrap;
     }
     .contact-info-container {
