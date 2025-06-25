@@ -236,7 +236,7 @@
     border-bottom: 2px solid var(--text_dark); /* Adjust thickness and color as needed */
     margin: 10px 10px 0px 0px;
     max-width: 400px;
-    min-width: 220px;
+    min-width: 260px;
     width: 30%;
 
   }
