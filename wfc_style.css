@@ -1,0 +1,45 @@
+  /*
+  GENERAL STYLING 
+  */
+  /*
+    'HOLLOW' PATLETTE
+    #0f0f1b  rgb(15,15,27)     <- darkest ->
+    #565a75  rgb(86,90,117) 
+    #c6b7be  rgb(198,183,190) 
+    #fafbf6  rgb(250,251,246)  <- lightest ->
+
+    'the internet raised you' Palette
+     Created by polyphrog
+    #322623  rgb(50,38,35)     <- darkest ->
+    #7b505c  rgb(123,80,92) 
+    #9b9880  rgb(155,152,128) 
+    #e4d6cf  rgb(228,214,207)  <- lightest ->
+
+    'THE DARK' Palette
+     Created by ATB Man
+    #0c0421 <- darkest ->
+    #576373
+    #323859  
+    #858f97  
+    #ecfffb <- lightest ->
+  */
+
+:root {
+    --text_dark: #0c0421;
+    --text_light: #576373;
+    --acc_dark: #323859;
+    --acc_light: #858f97;
+    --bg_light: #ecfffb;
+    --borderwidth: 0.4rem;
+    --broderradius: 0.4rem;
+}
+  
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  .wfc-grid > td {
+    width: 40px;
+    height: 40px;
+    border: 0.5rem solid ver(--text_dark);
+  }

@@ -1,7 +1,7 @@
 // vars for WFC
 
 const tileImages = [];
-const DIM = 6;
+const DIM = 5;
 let tileSize = 0;
 let grid = [];
 let tiles = [];
@@ -20,8 +20,6 @@ console.log("height = " + html.clientHeight +"/"+canvas.height);
 
 // variables for tile tracking
 let wfcRowCount = 0;//Math.ceil(canvas.height / canvas.width / DIM);
-//let wfcRowsLoaded = 0;
-//let wfcTilesInView = Math.ceil(html.clientHeight / (canvas.width/DIM));
 
 window.addEventListener('resize', () => {
   canvas.width = html.clientWidth;
@@ -44,7 +42,6 @@ window.addEventListener('resize', () => {
 })
 
 function preloadImages() {
-  // const path = './assets/tiles/circuit-coding-train';
   const path = './assets/tiles/circuit-blank';
   for (let i = 0; i < 21; i++) {
       var _img = new Image();
@@ -56,17 +53,17 @@ function preloadImages() {
 
 function preloadTiles(){
   // Loaded and created the tiles
-  tiles[0]  = new Tile(tileImages[0],  ['___', '___', '___', '___']);
-  tiles[1]  = new Tile(tileImages[1],  ['___', '___', '_B_', '___']);
-  tiles[2]  = new Tile(tileImages[2],  ['___', '___', 'C_C', '___']);
+  tiles[0] = new Tile(tileImages[0],  ['___', '___', '___', '___']);
+  tiles[1] = new Tile(tileImages[1],  ['___', '___', '_B_', '___']);
+  tiles[2] = new Tile(tileImages[2],  ['___', '___', 'C_C', '___']);
   tiles[3] = new Tile(tileImages[3], ['___', '___', 'DDD', '___']);
-  tiles[4]  = new Tile(tileImages[4],  ['_B_', '___', '_B_', '___']);
-  tiles[5]  = new Tile(tileImages[5],  ['_B_', '_B_', '_B_', '_B_']);
-  tiles[6]  = new Tile(tileImages[6],  ['___', '___', '_B_', '_B_']);
-  tiles[7]  = new Tile(tileImages[7],  ['___', '_B_', '_B_', '_B_']);
-  tiles[8]  = new Tile(tileImages[8],  ['C_C', '___', '_B_', '___']);
-  tiles[9]  = new Tile(tileImages[9],  ['C_C', '___', 'C_C', '___']);
-  tiles[10]  = new Tile(tileImages[10],  ['DDD', '___', 'C_C', '___']);
+  tiles[4] = new Tile(tileImages[4],  ['_B_', '___', '_B_', '___']);
+  tiles[5] = new Tile(tileImages[5],  ['_B_', '_B_', '_B_', '_B_']);
+  tiles[6] = new Tile(tileImages[6],  ['___', '___', '_B_', '_B_']);
+  tiles[7] = new Tile(tileImages[7],  ['___', '_B_', '_B_', '_B_']);
+  tiles[8] = new Tile(tileImages[8],  ['C_C', '___', '_B_', '___']);
+  tiles[9] = new Tile(tileImages[9],  ['C_C', '___', 'C_C', '___']);
+  tiles[10] = new Tile(tileImages[10],  ['DDD', '___', 'C_C', '___']);
   tiles[11] = new Tile(tileImages[11], ['C_C', '___', 'C_C', 'C_C']);
   tiles[12] = new Tile(tileImages[12], ['C_C', '_B_', '___', '___']);
   tiles[13] = new Tile(tileImages[13], ['DDD', '___', 'DDD', '___']);
@@ -94,17 +91,19 @@ function preloadTiles(){
 
 // once all images are loaded, the algorithm will move to next step (generating the tiles)
 function imageLoaded(){
+  // increment load index
   if(++imagesLoaded >= (tileImages.length)){ 
     preloadTiles();
   }
 }
 function canvasFadeIn(){
-  ctx.globalAlpha *= 1.2;
-  if(ctx.globalAlpha >= 1) 
+  ctx.globalAlpha *= 1.1;
+  if(ctx.globalAlpha >= 0.5) 
   {
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = 0.5;
   } else {
     setTimeout(canvasFadeIn, 0.005);
+    setInterval
   }
   draw();
 }
@@ -147,6 +146,7 @@ function startOver() {
   // Create cell for each spot on the grid
   for (let i = 0; i < DIM * wfcRowCount; i++) {
     grid[i] = new Cell(tiles.length, i);
+    if(i < DIM){grid[i].collapse(0)}
   }
   // collapse a random number of cells prior to running algorithm
   for(let i=0; i < wfcRowCount; i++){
@@ -154,7 +154,7 @@ function startOver() {
       let randInd = Math.floor(Math.random()*DIM);
       randInd += i*DIM;
       //console.log("random index = " + randInd + " / " + grid.length);
-      grid[randInd].collapse(0);
+      if(!grid[randInd].collapsed){grid[randInd].collapse(0)}
     }
   }
   updateOptions();

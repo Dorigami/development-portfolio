@@ -8,18 +8,20 @@
     <title>Developer Portfolio</title>
     <link rel="icon" type="image/png" href="favicon.png"/>
     <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="wfc_style.css"/>
     <link rel="stylesheet" href="mediaqueries.css"/>
+    <script src="wfc_tile.js" defer></script>
+    <script src="wfc_cell.js" defer></script>
+    <script src="wfc_sketch.js" defer></script>
   </head>
 
   <body>
     <!-- WFC ELEMENTS -->
-    <canvas class="background-cv" id="wfc_canvas" width="1200" height="1200"></canvas>
-    <script src="wfc_tile.js"></script>
-    <script src="wfc_cell.js"></script>
-    <script src="wfc_sketch.js"></script>
+    <canvas class="background-cv" id="wfc_canvas" width="10" height="10"></canvas>
+    <!-- <script src="wfc_sketch.js" defer></script> -->
     <!-- PORTFOLIO ELEMENTS -->
     <nav id="desktop-nav">
-      <div class="logo">Dorian Payton</div>
+      <div class="logo">( ͡° ͜ʖ ͡°)</div>
       <div>
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
@@ -74,14 +76,26 @@
         </div>
       </div>
     </section>
+    <table class="wfc-grid">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+    </table>
     <section id="about">
-      <div class="section-header" style="z-index: 20;">
-        <div class="about-header-text-div">
-          <p class="section__text__p1">Get To Know More</p>
-          <h1 class="title">About Me</h1>
-        </div>
-      </div>
+
       <div class="section-container">
+        <div class="section-header" style="z-index: 20;">
+          <div class="about-header-text-div">
+            <p class="section__text__p1">Get To Know More</p>
+            <h1 class="title">About Me</h1>
+          </div>
+          <div class="section-header-divider"></div>
+        </div>
+        
         <div class="about-details-container">
           <div class="text-container">
             <p>
@@ -96,13 +110,14 @@
       </div>
     </section>
     <section id="projects">
-      <div class="section-header" style="z-index: 20;">
-        <div class="projects-header-text-div">
-          <p class="section__text__p1">Browse My Recent</p>
-          <h1 class="title">Projects</h1>
-        </div>
-      </div>
-      <div class="experience-details-container">
+      <div class="section-container">
+          <div class="section-header" style="z-index: 20;">
+            <div class="projects-header-text-div">
+              <p class="section__text__p1">Browse My Recent</p>
+              <h1 class="title">Projects</h1>
+            </div>
+            <div class="section-header-divider"></div>
+          </div>
           <div class="details-container">
             <div class="project-header">
               <table style="width: 100%;table-layout: auto;border-collapse: collapse;">
@@ -118,7 +133,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td><h3 class="project-sub-title"></h3></td>
+                  <td><h3 class="project-sub-title">JavaScript</h3></td>
                   <td></td>
                 </tr>
               </table>
@@ -252,7 +267,9 @@
     <section id="contact">
       <div class="contact-info-upper-container">
         <div class="section-header">
-          <h1 class="title">Contact Me</h1>
+          <div class="contact-header-text-div">
+            <h1 class="title">Contact Me</h1>
+          </div>
         </div>
         <div class="contact-info-container">
           <img
